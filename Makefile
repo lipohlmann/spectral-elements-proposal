@@ -1,4 +1,4 @@
-manuscript = report
+manuscript = proposal
 references = $(wildcard *.bib)
 latexopt   = -halt-on-error -file-line-error
 
