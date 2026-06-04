@@ -1,0 +1,49 @@
+\documentclass[11pt]{article}
+
+\usepackage[T1]{fontenc}
+\usepackage{tgpagella}
+\usepackage{mathtools}
+\usepackage{geometry}
+\usepackage{microtype}
+\usepackage{titlesec}
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{amssymb}
+\usepackage{setspace}
+\usepackage{hyperref}
+\usepackage{fancyhdr}
+\usepackage{graphicx}
+\usepackage{float}
+\usepackage{apptools}
+%\usepackage{units}
+\usepackage{tocloft}
+\usepackage[labelfont=bf]{caption}
+
+
+\hypersetup{
+    colorlinks=true,
+    linkcolor=black,
+    filecolor=magenta,
+    urlcolor=blue,
+    citecolor=black
+}
+
+\usepackage[backend=biber,style=numeric,sorting=nyt,
+	natbib=true,firstinits=true,uniquename=false,defernumbers=true]{biblatex}
+
+\addbibresource{../spectral-elements.bib}
+
+\newcommand{\Sn}{$S_N$}
+\newcommand{\Pn}{$P_N$}
+
+\title{\textbf{Spectral Elements in Neutron Transport\\Literature Notes}}
+\author{L. Pohlmann}
+\date{Last Modified: \today}
+
+\begin{document}
+\maketitle
+\tableofcontents
+\clearpage
+\printbibliography
+
+\end{document}
