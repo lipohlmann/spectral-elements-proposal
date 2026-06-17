@@ -17,7 +17,12 @@
 \usepackage{apptools}
 %\usepackage{units}
 \usepackage{tocloft}
+\usepackage{physics}
 \usepackage[labelfont=bf]{caption}
+\usepackage[noabbrev,capitalize]{cleveref}
+
+\usepackage[acronym,toc]{glossaries}
+\loadglsentries{acros}
 
 
 \hypersetup{
@@ -33,6 +38,21 @@
 
 \addbibresource{../spectral-elements.bib}
 
+% --------------------------------------------------------------------
+% Convenience commands
+% --------------------------------------------------------------------
+\newcommand{\ohat}{\hat{\Omega}}
+\newcommand{\rvec}{\mathbf{r}}
+\newcommand{\psifullprime}{\psi\left(\mathbf{r},\hat{\Omega}',E',t\right)}
+\newcommand{\psifull}{\psi\left(\mathbf{r},\hat{\Omega},E,t\right)}
+\newcommand{\psisimple}{\psi\left(\mathbf{r},\hat{\Omega}\right)} % "psi simple"
+\newcommand{\psiplus}{\psi^+}
+\newcommand{\intelems}{\int_{\mathcal{A}}\int_{\tau}}
+\newcommand{\elemdifs}{\dd \tau \dd \ohat}
+\newcommand{\sigt}{\Sigma_t}
+% --------------------------------------------------------------------
+
+
 \newcommand{\Sn}{$S_N$}
 \newcommand{\Pn}{$P_N$}
 
@@ -43,6 +63,58 @@
 \begin{document}
 \maketitle
 \tableofcontents
+\printglossary[type=\acronymtype]
+
+\section{A Self-Adjoint Angular Flux Equation~\cite{morelSelfAdjointAngularFlux1999}}
+\begin{itemize}
+    \item ``The traditional self-adjoint forms of the transport equation are the even- and odd-parity equations.''
+    \item Advantages of even- and odd-parity equations:
+          \begin{itemize}
+              \item Can be solved on multidimensional finite element spatial meshes using standard techniques.
+              \item Implementation of continuous finite element spatial discretizations results in matrices that are \gls{spd}.
+              \item \Pn equations are more easily solved in the second-order self-adjoint form than the first-order form because the flux moments are strongly coupled via the streaming operator ($\ohat\cdot\grad$)
+          \end{itemize}
+    \item Disadvantages of even- and odd-parity equations:
+          \begin{itemize}
+              \item The source iteration equations in \Sn create a \textit{general} sparse matrix rather than a block lower-triangular matrix, so sweeping cannot be implemented. As noted, this is not necessarily a drawback, as whether or not sweeping is more efficient depends on the mesh (an orthogonal mesh will see significant improvements using sweeping).
+              \item ``In multidimensions, reflective and reflective-like boundary conditions result in fully implicit coupling between incoming and outgoing directions. In contrast, only on-way coupling occurs between ... directions with the standard first-order form of the transport equation.'' This causes \gls{dsa} techniques to lose efficacy in \Sn. \Pn, however, sees no losses because angular moments are always coupled at the boundaries.
+              \item ``The full angular flux is difficult to numerically calculate because the even- and odd-parity flux components can be obtained with different orders of accuracy and are no spatially co-located. This arises because one component is always proportional to the gradient of the other.''
+              \item The streaming term contains the inverse of the total cross section, which produces a singularity for streaming in a void. As noted, it is possible to derive even- and odd-parity equations specifically for streaming in a vacuum, but they come without coupling to each other. This means that to truly avoid the singularity, one would need to solve \textit{both} equations to get the angular in a vacuum.
+              \item The matrix produced in a region that is purely scattering is singular.
+          \end{itemize}
+          Advantages of the \gls{saaf} equation \textit{in addition to those listed above for the even- and odd-parity equations}:
+          \begin{itemize}
+              \item Angular flux is directly solved for (rather than needing to reconstruct from the parity solutions).
+              \item Reflective and reflective-like boundary conditions are coupled the same way as they are in the standard first-order transport equation, and thus are much simpler to implement with \Sn.
+              \item Can be solved in a void.
+          \end{itemize}
+          Disadvantages of the \gls{saaf} equation (independent of the above):
+          \begin{itemize}
+              \item Cannot be swept for source iterations (for the same reason as above).
+              \item Cannot be solved in a purely-scattering region (for the same reason as above).
+              \item Angular domain is the full unit sphere (as opposed to only a half of the unit sphere in the even- and odd-parity equations).
+          \end{itemize}
+    \item \Gls{saaf} equation is:
+          \begin{equation}\label{eq:saaf-equation}
+              -\ohat\cdot \grad \left(\frac{1}{\Sigma_t-S}\right)\ohat\cdot \grad \psi+\left(\Sigma_t-S\right)\psi = q-\ohat\cdot \grad \left(\frac{1}{\Sigma_t-S}\right)q
+          \end{equation}
+          where $q$ is an inhomogenous volumetric source, $S$ is the inscatter operator \begin{equation} \label{eq:scatter-operator}
+              S\psi=\int_{4\pi}\Sigma_s \left(\ohat\cdot\ohat '\right)\psi\left(\ohat '\right)\dd \ohat '
+          \end{equation}.
+    \item Because \cref{eq:saaf-equation} is second-order in space, we now require an additional boundary condition. The natural incoming flux boundary condition is:
+          \begin{equation*}
+              \psi\left(\rvec_b,\ohat \right) = f(\ohat),\quad \ohat\cdot \hat{n}<0
+          \end{equation*}
+          (note that $f\left(\ohat\right)=0$ for vacuum BC). In addition, we require \cref{eq:saaf-equation} to satisfy the first-order transport equation on the boundary for outgoing fluxes:
+          \begin{equation*}
+              \ohat\cdot\grad\psi\left(\rvec_b,\ohat\right)+\Sigma_t\psi\left(\rvec_b,\ohat\right)=S\psi\left(\rvec_b,\ohat\right)+q\left(\rvec_b,\ohat\right),\quad \ohat\cdot\hat{n}>0.
+          \end{equation*}
+    \item Energy-dependent versions of the operator $\frac{1}{\Sigma_t-S}$ are usually not self-adjoint, meaning the discretized \gls{saaf} equations are no longer \gls{spd}. To keep this property, the multigroup approximation is made.
+    \item Handling of void regions in the \gls{saaf} equation is still problematic. This paper suggests additional research should be done for this\ldots
+    \item Spherical harmonics functions are eigenfunctions of the monoenergetic scattering operator, \cref{eq:scatter-operator}. (Derivation included in paper.)
+\end{itemize}
+
+
 \clearpage
 \printbibliography
 
