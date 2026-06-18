@@ -1,0 +1,8 @@
+\begin{itemize}
+  \item Published in 1984
+  \item Reading between the lines: Spectral elements offer extremely high accuracy numerical solutions (much better than finite elements), and this accuracy shines especially when multiple elements hug a region that the function changes dramatically. This leads me to the conclusion that spectral elements would be effective for producing high-accuracy results for reactor physics problems with multiple materials and large flux changes.
+  \item Spectral methods (if done correctly) produce exponential (``spectral'') convergence, while classic finite elements produce algebraic convergence.
+  \item Direct comparison of spectral to finite elements is tricky because we can get away with more elements in the latter while still staying equal to or under the computational requirements for a good spectral element implementation.
+  \item Spectral techniques are well-fit for periodic problems. When problems are \textit{not} periodic, we look to a polynomial expansion (such as Chebyshev), which may or may not fit the problem well. \todo{How does NekRS handle non-periodic simulations?}
+  \item
+\end{itemize}
