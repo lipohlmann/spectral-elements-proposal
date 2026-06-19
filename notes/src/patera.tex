@@ -4,5 +4,11 @@
   \item Spectral methods (if done correctly) produce exponential (``spectral'') convergence, while classic finite elements produce algebraic convergence.
   \item Direct comparison of spectral to finite elements is tricky because we can get away with more elements in the latter while still staying equal to or under the computational requirements for a good spectral element implementation.
   \item Spectral techniques are well-fit for periodic problems. When problems are \textit{not} periodic, we look to a polynomial expansion (such as Chebyshev), which may or may not fit the problem well. \todo{How does NekRS handle non-periodic simulations?}
-  \item
+  \item In the \gls{sem}, we look for a balance between the number of elements and number of collocation points per element. That is, we don't simply look to pick the biggest elements possible with the highest-degree polynomial.
+  \item At the time of this paper's writing, the two biggest challenges of the \gls{sem} are:
+        \begin{enumerate}
+          \item matrix inversion inefficiency
+          \item restriction to rectangular elements
+        \end{enumerate}
+        Given that this paper is 40+ years old, I imagine these issues have been dealt with\ldots
 \end{itemize}
