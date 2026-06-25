@@ -1,3 +1,8 @@
 \begin{itemize}
   \item Model problem is a monoenergetic, heterogeneous 1D slab with an isotropic source and no multiplication.
+  \item Angular component is expanded using spherical harmonics/Legendre polynomials, while the spatial component is ``expanded'' in Legendre polynomials using a \gls{gll} quadrature set. No actual functional expansion was done in this paper, which is disappointing\dots
+  \item Interestingly, for the constant-cross-section case in 1D, the spectral element Galerkin approximation yields a sparse matrix with blocks that are diagonal, but the system as a whole is not diagonal.
+  \item Spectral convergence is observed.
+  \item Paper acknowledges deficiencies in its arguments for the \gls{sem} because only a single 1D case was explored and not even fully.
+  \item The \Pn equations were derived classically on the first-order transport equation, which appears to yield unfavorable linear systems except for specific, ``nice'' cases (such as this).
 \end{itemize}
