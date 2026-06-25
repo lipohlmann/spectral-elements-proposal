@@ -1,3 +1,4 @@
+\subsection*{23 June 2026}
 \begin{itemize}
   \item The biggest issues with the \gls{saaf} (that I have read so far) is its struggle to handle streaming in a void, where the total cross section is zero. Taking a step back, the \gls{saaf} was developed by solving for the angular flux tied to the total cross section (this was easy picking because the inversion is purely algebraic). However, if the cross section is 0, the \gls{saaf} is no longer valid because we are dividing by zero. A question persists for me: why not try to invert one of the \emph{other} operators to get the angular flux? As in, is it possible to isolate $\psi$ in $\ohat \cdot\grad\psi$ or $\int_{4\pi}\psi\dd\ohat$? The former I think might be easier because we don't need to differentiate with respect to solid angle, but I could be wrong\ldots Anyways, we should explore this. \textbf{Edit:} I'm a moron: if we are in a vacuum, we have no scattering source either, so the equation becomes just:
         \begin{equation*}
@@ -10,3 +11,12 @@
         The above \emph{should} be \gls{spd}, so to couple to the \gls{saaf}, we would need to apply continuity of the angular flux on the boundaries. Notice that this is a boundary value problem with an elliptic form, so this should be a straightforward equation to solve\dots
   \item If a good technique can be hypothesized, we should start by solving on, say, Reed's problem in 1D with spectral elements, then do a bunch of analysis (if possible).
 \end{itemize}
+
+\subsection*{24 June 2026}
+\begin{itemize}
+  \item The clear path appears to be to use the \gls{saaf} form of the transport equation because it gives a second-order form in space, which synergizes extremely well with the \gls{sem}.
+  \item Within transport, the only work that appears to have been done has focused on \Pn expansions in angle. This appears to have great preliminary results, but the authors notes the limitations in order that come along with this expansion.
+  \item I have two leading ideas for the angular treatment: discrete ordinates, or Chebeshev polynomial expansion. Discrete ordinates comes with the possibility of ray effects appearing, which may undermine the (hopefully good) results we get from the spatial discretization. $T_N$ methods have seen some success in transport, though they are not as widely used. Let's look into this.
+  \item Would the use of a \gls{gll} quadrature set on the angular domain for the set of discrete ordinates be worthwhile?
+\end{itemize}
+
